@@ -20,6 +20,7 @@ public class FdFFrameKeyAdapter extends KeyAdapter {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE -> System.exit(0);
             case KeyEvent.VK_I -> frame.importMap();
+            case KeyEvent.VK_P -> frame.canvas.switchPrintLabels();
         }
     }
 }

@@ -15,7 +15,7 @@ public class FdFFrame extends JFrame {
     // objects
     private FdFMap map = null;
     // components
-    private FdFCanvas canvas;
+    public FdFCanvas canvas;
 
     public FdFFrame() {
         // set attributes
