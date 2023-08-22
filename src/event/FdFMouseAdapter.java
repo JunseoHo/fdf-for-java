@@ -1,29 +1,28 @@
 package event;
 
 import gui.FdFCanvas;
-import transform.FdFMap;
+import map.FdFMap;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class FdFCanvasMouseAdapter extends MouseAdapter {
+public class FdFMouseAdapter extends MouseAdapter {
 
-    // components
-    private FdFCanvas canvas;
-    // objects
-    private FdFMap map;
-    // status
-    private boolean rotating;
-    private boolean translating;
-    // working variables
-    private int originX;
-    private int originY;
-    private int deltaX;
-    private int deltaY;
+    private FdFCanvas       canvas;
+    private FdFMap          map;
 
-    public FdFCanvasMouseAdapter(FdFCanvas canvas) {
+    private boolean         rotating;
+    private boolean         translating;
+
+    private int             originX;
+    private int             originY;
+    private int             deltaX;
+    private int             deltaY;
+
+    public FdFMouseAdapter(FdFCanvas canvas) {
         this.canvas = canvas;
+        this.map = null;
         this.rotating = false;
         this.translating = false;
     }
@@ -35,38 +34,28 @@ public class FdFCanvasMouseAdapter extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         if (map == null) return;
-        if (e.getButton() == MouseEvent.BUTTON1 && !translating) {
-            rotating = true;
-            originX = e.getX();
-            originY = e.getY();
-        } else if (e.getButton() == MouseEvent.BUTTON3 && !rotating) {
-            translating = true;
-            originX = e.getX();
-            originY = e.getY();
-        }
+        if (e.getButton() == MouseEvent.BUTTON1 && !translating) rotating = true;
+        else if (e.getButton() == MouseEvent.BUTTON3 && !rotating) translating = true;
+        originX = e.getX();
+        originY = e.getY();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         if (map == null) return;
+        deltaX = e.getX() - originX;
+        deltaY = e.getY() - originY;
+        originX = e.getX();
+        originY = e.getY();
         if (rotating) {
-            deltaX = e.getX() - originX;
-            deltaY = e.getY() - originY;
-            originX = e.getX();
-            originY = e.getY();
             map.rotateX(deltaY * (-1));
             map.rotateZ(deltaX * (-1));
-            canvas.repaint();
         }
         if (translating) {
-            deltaX = e.getX() - originX;
-            deltaY = e.getY() - originY;
-            originX = e.getX();
-            originY = e.getY();
             map.translateX(deltaX);
             map.translateY(deltaY);
-            canvas.repaint();
         }
+        canvas.repaint();
     }
 
     @Override
@@ -82,5 +71,4 @@ public class FdFCanvasMouseAdapter extends MouseAdapter {
         map.scale(e.getWheelRotation() * (-3));
         canvas.repaint();
     }
-
 }
