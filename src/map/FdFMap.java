@@ -54,42 +54,21 @@ public class FdFMap implements Cloneable {
         if (rotateZ >= 360) rotateZ -= 360;
     }
 
-//    private void paintSegments(int x1, int y1, int x2, int y2, Color c1, Color c2, BufferedImage img) {
-//        int dx = Math.abs(x2 - x1);
-//        int dy = Math.abs(y2 - y1);
-//        int sx = (x1 < x2) ? 1 : -1;
-//        int sy = (y1 < y2) ? 1 : -1;
-//        int err = dx - dy;
-//        while (true) {
-//            if (x1 >= 0 && x1 < img.getWidth() && y1 >= 0 && y1 < img.getHeight())
-//                img.setRGB(x1, y1, c1.getRGB());
-//            if (x1 == x2 && y1 == y2) break;
-//            int err2 = 2 * err;
-//            if (err2 > -dy) {
-//                err -= dy;
-//                x1 += sx;
-//            }
-//            if (err2 < dx) {
-//                err += dx;
-//                y1 += sy;
-//            }
-//        }
-//    }
-
     private void paintSegmentsWithGradient(int x1, int y1, int x2, int y2, Color c1, Color c2, BufferedImage img) {
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
         int sx = (x1 < x2) ? 1 : -1;
         int sy = (y1 < y2) ? 1 : -1;
         int err = dx - dy;
-
         for (int i = 0; i <= Math.max(dx, dy); i++) {
             double fraction = (double) i / Math.max(dx, dy);
             Color currentColor = calculateGradientColor(c1, c2, fraction);
 
             if (x1 >= 0 && x1 < img.getWidth() && y1 >= 0 && y1 < img.getHeight()) {
                     img.setRGB(x1, y1, currentColor.getRGB());
+
             }
+
 
             if (x1 == x2 && y1 == y2) {
                 break;
@@ -118,7 +97,6 @@ public class FdFMap implements Cloneable {
     private void paintSegments(int x1, int y1, int x2, int y2, Color c1, Color c2, BufferedImage img) {
         paintSegmentsWithGradient(x1, y1, x2, y2, c1, c2, img);
     }
-
 
     public void paint(Graphics g, int imgWidth, int imgHeight) {
         List<FdFVertex> transformedVertices = new ArrayList<>();

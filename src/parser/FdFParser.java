@@ -37,18 +37,24 @@ public class FdFParser {
                 x = 0;
                 while (tokenizer.hasMoreTokens()) {
                     token = tokenizer.nextToken();
-                    if (Pattern.matches("[0-9]*,(0x|0X)[A-Fa-f0-9]{1,6}", token)) {
+                    if (Pattern.matches("-?[0-9]*,(0x|0X)[A-Fa-f0-9]{1,6}", token)) {
                         String[] values = token.split(",(0x|0X)");
                         z = Integer.parseInt(values[0]);
                         c = Integer.parseInt(values[1], 16);
                         vertices.add(new FdFVertex(x++, y, z, c));
-                    } else if (Pattern.matches("^[0-9]*$", token)) {
+                    } else if (Pattern.matches("^-?[0-9]*$", token)) {
                         z = Integer.parseInt(token);
                         vertices.add(new FdFVertex(x++, y, z));
-                    } else throw new FdFMapFormatException();
+                    } else {
+                        System.out.println("Pattern error : " + token);
+                        throw new FdFMapFormatException();
+                    }
                 }
                 if (width == -1) width = x + 1;
-                else if (width != x + 1) throw new FdFMapFormatException();
+                else if (width != x + 1) {
+                    System.out.println("Width is deff");
+                    throw new FdFMapFormatException();
+                }
                 y++;
             }
             reader.close();

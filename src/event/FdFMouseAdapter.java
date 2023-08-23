@@ -68,7 +68,7 @@ public class FdFMouseAdapter extends MouseAdapter {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (map == null) return;
-        map.scale(e.getWheelRotation() * (-3));
+        map.scale(e.getWheelRotation() * (-2));
         canvas.repaint();
     }
 }
